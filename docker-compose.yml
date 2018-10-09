@@ -1,0 +1,21 @@
+version: "2"
+services:
+  api:
+    image: tranhoangnguyen/flask-todo:latest
+    ports:
+      - "5000:5000"
+    volumes:
+      # Remaps the volume for live editing
+      - .:/app
+    env_file: 
+      - local.env
+    # Run the flask server
+    command: bin/flask-run.sh
+
+  migrate:
+    image: tranhoangnguyen/flask-todo:latest
+    volumes:
+      - .:/app
+
+    # Migrate DB
+    command: bin/flask-upgrade.sh
