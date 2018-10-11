@@ -21,3 +21,10 @@ class SerializeDateTime(fields.Raw):
             return value.strftime('%Y-%m-%dT%H:%M:%S')
         else:
             return None
+
+
+def resource_update_success():
+    """
+    Return message when a resource is updated
+    """
+    return {'status': True}
