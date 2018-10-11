@@ -1,1 +1,1 @@
-from .apis import UserResource, UserListResource
+from .apis import UserResource, UserListResource, UserLocationResource
