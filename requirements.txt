@@ -39,7 +39,18 @@ psycopg2==2.7.5
 # Homepage: https://gunicorn.org/
 gunicorn==19.9.0
 
+############################################################ 
+# Libraries for GEOGIS
+############################################################
+
+# GeoAlchemy 2 provides extensions to SQLAlchemy for working with spatial databases.
+# Homepage: https://geoalchemy-2.readthedocs.io/en/latest/
 geoalchemy2==0.5.0
+
+# Shapely is a BSD-licensed Python package for manipulation and analysis of planar geometric objects.
+# It is based on the widely deployed GEOS (the engine of PostGIS) and JTS (from which GEOS is ported) libraries
+# Homepage: https://github.com/Toblerity/Shapely
+shapely==1.6.4
 
 
 ############################################################ 
