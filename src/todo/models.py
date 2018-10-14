@@ -10,6 +10,7 @@ from core.models import (
 # Todo model and query set
 #################################################
 
+
 class TodoQuery(BaseQuery):
 
     def completed(self):
@@ -43,6 +44,7 @@ class TodoQuery(BaseQuery):
         """
         return self.filter_by(id=id)
 
+
 class Todo(db.Model, TimestampMixin):
     query_class = TodoQuery
 
@@ -64,7 +66,7 @@ class Todo(db.Model, TimestampMixin):
         return todo
 
     def update(self, data):
-        for key,value in data.items():
+        for key, value in data.items():
             setattr(self, key, value)
 
         if self.completed:

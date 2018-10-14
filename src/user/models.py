@@ -1,13 +1,11 @@
 from flask_sqlalchemy import BaseQuery
-from shapely import wkb
 from sqlalchemy import cast
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import query_expression, with_expression
 from geoalchemy2 import Geometry, Geography, func
-from geoalchemy2.shape import from_shape
-from shapely.geometry import Point
+from geoalchemy2.elements import WKTElement
 
-from core import bcrypt
+from core import bcrypt, fields
 from core.models import db, TimestampMixin
 
 #################################################
@@ -27,23 +25,33 @@ class UserQuery(BaseQuery):
         Filter user within radius from a center (lat, lng) coordinate
         """
         # Define center point
-        center_point = Point(lng, lat)
-        wkb_element = from_shape(center_point, srid=4326)
+        point = 'POINT(%f %f)' % (lng, lat)
+        wkb_element = WKTElement(point, srid=4326)
 
-        # Define expression to calculate distance from center point
-        # to users location
-        distance = User.location \
-            .distance_centroid(wkb_element) \
-            .cast(db.Float) \
-            .label('distance')
+        # Define expression to calculate distance
+        # from center point to users location
+        if db.engine.name == 'sqlite':
+            distance = func \
+                .distance(User.location, wkb_element, 1) \
+                .label('distance')
+        else:
+            distance = User.location \
+                .distance_centroid(wkb_element) \
+                .cast(db.Float) \
+                .label('distance')
 
         # Define lat, lng query set
-        lat = func.ST_Y(cast(User.location, Geometry)).label('lat')
-        lng = func.ST_X(cast(User.location, Geometry)).label('lng')
+        lat = func.ST_Y(User.location).label('lat')
+        lng = func.ST_X(User.location).label('lng')
 
         # Filter user within radius from center point
-        qs = User.query \
-            .filter(func.ST_DWithin(User.location, wkb_element, radius))
+        if db.engine.name == 'sqlite':
+            qs = User.query.filter(func.PtDistWithin(
+                User.location, wkb_element, radius))
+        else:
+            qs = User.query.filter(
+                func.ST_DWithin(
+                    User.location, wkb_element, radius))
 
         # Append Query-time SQL expressions distance as mapped attributes
         # https://docs.sqlalchemy.org/en/latest/orm/mapped_sql_expr.html
@@ -79,21 +87,13 @@ class User(db.Model, TimestampMixin):
     expires_at = db.Column(db.DateTime())
 
     # Store last location of User. This properties is just used for postgis POC
-    location = db.Column(Geography(
-        geometry_type='POINT', management=True, use_st_prefix=True))
+    location = db.Column(fields.PointColumn(
+        geometry_type='POINT', management=True, use_st_prefix=False))
 
     # Distance from user current location to a coordinate
     distance = query_expression()
     lat = query_expression()
     lng = query_expression()
-
-    @hybrid_property
-    def coordinate(self):
-        """
-        Return (latitude, longitute) of the location property
-        """
-        point = wkb.loads(bytes(self.localtion.data))
-        return (point.x, point.y)
 
     @property
     def password(self):
@@ -124,8 +124,9 @@ class User(db.Model, TimestampMixin):
             db.session.commit()
             return new_user
 
-    def update_location(self, lat, lng):
-        wkb_element = from_shape(Point(lng, lat), srid=4326)
+    def update_location(self, lat, lng, **kwargs):
+        point = 'POINT(%f %f)' % (lng, lat)
+        wkb_element = WKTElement(point, srid=4326)
         self.location = wkb_element
         db.session.add(self)
         db.session.commit()
