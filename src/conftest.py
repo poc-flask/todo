@@ -33,9 +33,11 @@ def client():
 
     return client
 
+
 @pytest.fixture(scope="session")
 def fake():
     """
-    Initialize faker.Faker instance to generate dummy testing data such as: Name, Email,...
+    Initialize faker.
+    Faker instance to generate dummy testing data such as: Name, Email,...
     """
     return Faker()

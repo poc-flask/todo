@@ -82,6 +82,7 @@ parser = reqparse.RequestParser()
 parser.add_argument('title', required=True, type=str)
 parser.add_argument('due_date', type=date_time_parsing)
 
+
 class TodoListResource(Resource):
 
     @jwt_required

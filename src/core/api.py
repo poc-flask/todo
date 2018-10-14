@@ -5,6 +5,7 @@ in this Todo application
 """
 from flask_restful import Api, abort
 
+
 class CoreApi(Api):
 
     """
