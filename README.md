@@ -1,8 +1,9 @@
-# TODO Application Backend
+## TODO Application Backend
 
 This code base provides the backend apis for Todo application.
 
 Project Organization
+
 ------------
     ├── bin                         <- Bash scripts to start flask server, migration tools.
     │
@@ -55,6 +56,7 @@ Project Organization
     └── requirements.txt            <- Python library is used in this project.
 
 Development Environment setup for local
+
 ------------
 
 ### Pre-requirements
@@ -69,7 +71,7 @@ There are 2 ways to start the application on local.
 
 ### 1. By Docker
 
-```
+```bash
 <!-- Migration data -->
 docker-compose up migrate
 <!-- Start flask application -->
@@ -85,13 +87,13 @@ To set up a new virtual environment
 
 #### Step 1: Setup virtual environment
 
-```
+```bash
 $ mkvirtualenv --python=`which python3` p-todo-app
 ```
 
 To install all python dependencies
 
-```
+```bash
 $ workon p-todo-app
 $ pip install -r requirements.txt
 ```
@@ -100,25 +102,25 @@ $ pip install -r requirements.txt
 
 Append the following statements to the ~/.bash_profile or any start up script in your system.
 
-```
+```bash
 export PYTHONPATH="${TODO_APP_FOLDER}/app-api/:$PYTHONPATH"
 ```
 
 then execute the bash profile.
 
-```
+```bash
 $ source ~/.bash_profile
 ```
 
 #### Step 3: Database migration
 
-```
+```bash
 ./bin/flask-upgrade.sh
 ```
 
 #### Step 4: Start the application server
 
-```
+```bash
 ./bin/flask-run.sh
 ```
 
@@ -126,29 +128,31 @@ Technical Stack
 ------------
 
 * [Flask](http://flask.pocoo.org)
-    - Flask is a microframework for Python based on Werkzeug.
+  * Flask is a microframework for Python based on Werkzeug.
 
 * [Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.3/)
-    - Flask-SQLAlchemy is an extension for Flask that adds support for SQLAlchemy to your application.
+  * Flask-SQLAlchemy is an extension for Flask that adds support for SQLAlchemy to your application.
 
 * [Flask-Migrate](https://github.com/miguelgrinberg/Flask-Migrate)
-    - SQLAlchemy database migrations for Flask applications using Alembic.
+  * SQLAlchemy database migrations for Flask applications using Alembic.
 
 * [Flask-RESTful](https://flask-restful.readthedocs.io/en/latest/)
-    - Flask-RESTful is an extension for Flask that adds support for quickly building REST APIs.
+  * Flask-RESTful is an extension for Flask that adds support for quickly building REST APIs.
 
 * [Flask-Bcrypt](https://flask-bcrypt.readthedocs.io/en/latest/)
-    - Flask-Bcrypt is a Flask extension that provides bcrypt hashing utilities for your application.
+  * Flask-Bcrypt is a Flask extension that provides bcrypt hashing utilities for your application.
 
 * [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/)
-    - Flask-JWT-Extended is a Flask extension that provides JSON Web Token utils.
+  * Flask-JWT-Extended is a Flask extension that provides JSON Web Token utils.
 
 * [Psycopg](http://initd.org/psycopg/)
-    - Psycopg is the most popular PostgreSQL adapter for the Python programming language.
+  * Psycopg is the most popular PostgreSQL adapter for the Python programming language.
 
 * [Gunicorn](https://gunicorn.org/)
   * Gunicorn 'Green Unicorn' is a Python WSGI HTTP Server for UNIX. It's used for heroku deployment.
 
 Additional Documentations
+
 ------------
+
 * [Todo Apis document](doc/index.md)
