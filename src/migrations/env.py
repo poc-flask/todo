@@ -1,7 +1,9 @@
 from __future__ import with_statement
 from alembic import context
 from sqlalchemy import engine_from_config, pool
+from sqlite3 import Connection
 from logging.config import fileConfig
+from core import spatialite_extension
 import logging
 
 # this is the Alembic Config object, which provides
@@ -69,7 +71,10 @@ def run_migrations_online():
                                 prefix='sqlalchemy.',
                                 poolclass=pool.NullPool)
 
+    spatialite_extension.load(engine)
+
     connection = engine.connect()
+
     context.configure(connection=connection,
                       target_metadata=target_metadata,
                       process_revision_directives=process_revision_directives,
@@ -77,7 +82,6 @@ def run_migrations_online():
 
     try:
         with context.begin_transaction():
-            # sql = "SELECT AddGeometryColumn(?, ?, ?, ?, ?) AS "AddGeometryColumn_1"'] [parameters: ('lake', 'geom', -1, 'POLYGON', 2)"
             context.run_migrations()
     finally:
         connection.close()
