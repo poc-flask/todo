@@ -19,3 +19,11 @@ services:
 
     # Migrate DB
     command: bin/flask-upgrade.sh
+
+  test:
+    image: tranhoangnguyen/flask-todo:latest
+    volumes:
+      - .:/app
+
+    # Migrate DB
+    command: bin/flask-test.sh
