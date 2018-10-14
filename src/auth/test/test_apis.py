@@ -2,6 +2,7 @@
 import json
 import requests
 
+
 def create_user(client, fake, email, pwd):
     """
     Create user for testing authentication
@@ -22,10 +23,13 @@ def test_login_success(client, fake):
     pwd = fake.password()
     user = create_user(client, fake, email, pwd)
 
-    rv = client.post('/auth', data=dict({
-	    "username": email,
-	    "password": pwd
-    }), follow_redirects=True)
+    rv = client.post(
+        '/auth',
+        data=dict({
+            "username": email,
+            "password": pwd
+        }),
+        follow_redirects=True)
 
     assert rv.status_code == requests.codes.ok
 
@@ -36,9 +40,12 @@ def test_login_fail(client, fake):
     pwd = fake.password()
     user = create_user(client, fake, email, pwd)
 
-    rv = client.post('/auth', data=dict({
-	    "username": email,
-	    "password": pwd + fake.password()
-    }), follow_redirects=True)
+    rv = client.post(
+        '/auth',
+        data=dict({
+            "username": email,
+            "password": pwd + fake.password()
+        }),
+        follow_redirects=True)
 
     assert rv.status_code == requests.codes.unauthorized
