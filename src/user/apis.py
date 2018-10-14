@@ -19,12 +19,14 @@ from core.utils import resource_update_success
 
 from .models import User
 
+
 resource_fields = {
     'id': fields.Integer,
     'first_name': fields.String,
     'last_name': fields.String,
     'access_token': fields.String
 }
+
 
 #################################################################
 # UserResource
@@ -52,7 +54,7 @@ coordinate_parser.add_argument('lat', type=float)
 coordinate_parser.add_argument('lng', type=float)
 coordinate_parser.add_argument('radius', type=float)
 
-resource_fields = {
+location_resource_fields = {
     'id': fields.Integer,
     'lat': fields.Float,
     'lng': fields.Float,
@@ -74,7 +76,7 @@ class UserLocationResource(Resource):
         return resource_update_success()
 
     @jwt_required
-    @marshal_with(resource_fields)
+    @marshal_with(location_resource_fields)
     def get(self):
         """
         Return a list of user within radius in meteres.
