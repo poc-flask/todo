@@ -18,7 +18,7 @@ def load_spatialite(dbapi_conn, connection_record):
 
     # On Alpine:
     # Install: TBD
-    # SPATIALITE_LIB_PATH=/usr/lib/x86_64-linux-gnu/libspatialite.so.5
+    # SPATIALITE_LIB_PATH=/usr/lib/mod_spatialite.so.7
 
     dbapi_conn.load_extension(spatialite_lib_path)
     dbapi_conn.enable_load_extension(False)
