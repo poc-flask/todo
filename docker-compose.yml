@@ -1,29 +1,25 @@
 version: "2"
 services:
   api:
-    image: tranhoangnguyen/flask-todo:latest
+    image: pocflask/todo-api:local
     ports:
       - "5000:5000"
     volumes:
       # Remaps the volume for live editing
       - .:/app
-    env_file: 
-      - local.env
-    # Run the flask server
-    command: bin/flask-run.sh
+    env_file:
+      - .env
+    # Run the flask server in development mode
+    command: bin/flask-dev.sh
 
   migrate:
-    image: tranhoangnguyen/flask-todo:latest
+    image: pocflask/todo-api:local
     volumes:
       - .:/app
-
-    # Migrate DB
     command: bin/flask-upgrade.sh
 
   test:
-    image: tranhoangnguyen/flask-todo:latest
+    image: pocflask/todo-api:local
     volumes:
       - .:/app
-
-    # Migrate DB
     command: bin/flask-test.sh
