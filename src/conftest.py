@@ -6,7 +6,12 @@ import flask_migrate
 
 
 from core import app
-from todo.models import Todo
+
+# Load user, and todo module to the test application
+import auth
+import user
+import todo
+import health
 
 
 @pytest.fixture(scope="session")
