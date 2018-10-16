@@ -1,4 +1,4 @@
-FROM pocflask/alpine:local as local-stage
+FROM pocflask/alpine:dev as local-stage
 COPY . /app
 WORKDIR /app
 # Setup python application path
